@@ -23,6 +23,27 @@ class SongsDb {
     return this._sequelize.sync()
   }
 
+  async listSongsByArtist (artist) {
+    return this._song.findAll({
+      where: {
+        artist
+      }
+    })
+  }
+
+  async listSongsByArtistAndAlbum (artist, album) {
+    return this._song.findAll({
+      where: {
+        artist,
+        album
+      }
+    })
+  }
+
+  async createSong ({ artist, album, song }) {
+    return this._song.create({ artist, album, song })
+  }
+
   static async at (dbFile = 'songs.db') {
     const db = new SongsDb(dbFile)
     await db._init()
