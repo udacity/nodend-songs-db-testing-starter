@@ -47,8 +47,31 @@ class SongsDb {
     })
   }
 
+  async listSongsByGenre (genreName) {
+    return this._song.findAll({
+      include: [{
+        model: this._genre,
+        where: {
+          name: genreName
+        }
+      }]
+    })
+  }
+
+  async findGenreByName (name) {
+    return this._genre.findOne({
+      where: {
+        name
+      }
+    })
+  }
+
   async createSong ({ artist, album, song }) {
     return this._song.create({ artist, album, song })
+  }
+
+  async createGenre ({ name }) {
+    return this._genre.create({ name })
   }
 
   static async at (dbFile = 'songs.db') {
