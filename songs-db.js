@@ -3,12 +3,14 @@
 const Sequelize = require('sequelize')
 const path = require('path')
 const SongModel = require('./models/song')
+const GenreModel = require('./models/genre')
 
 class SongsDb {
   constructor (dbFile) {
     this._storage = path.join(__dirname, dbFile)
     this._sequelize = null
     this._song = null
+    this._genre = null
   }
 
   async _init () {
@@ -18,8 +20,13 @@ class SongsDb {
     })
 
     const Song = this._sequelize.define('song', SongModel)
+    const Genre = this._sequelize.define('genre', GenreModel)
+
+    Genre.hasMany(Song)
+    Song.belongsTo(Genre)
 
     this._song = Song
+    this._genre = Genre
     return this._sequelize.sync()
   }
 
