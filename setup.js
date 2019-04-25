@@ -15,34 +15,52 @@ try {
 ;(async () => {
   const db = await SongsDb.at('songs.db')
   try {
+    const genres = [{
+      name: 'Electronic'
+    }, {
+      name: 'Chiptune'
+    }]
+
+    for (let genre of genres) {
+      await db.createGenre(genre)
+    }
+
     const songs = [{
       artist: 'Bisou',
       album: 'Music Spaceshift',
-      song: 'Bad Flower'
+      song: 'Bad Flower',
+      genreName: 'Electronic'
     }, {
       artist: 'Bisou',
       album: 'Music Spaceshift',
-      song: 'Panda'
+      song: 'Panda',
+      genreName: 'Electronic'
     }, {
       artist: 'Bisou',
       album: 'Music Spaceshift',
-      song: 'Industrial'
+      song: 'Industrial',
+      genreName: 'Electronic'
     }, {
       artist: 'Bisou',
       album: 'Haumea',
-      song: 'Moon Answer'
+      song: 'Moon Answer',
+      genreName: 'Electronic'
     }, {
       artist: 'Komiku',
       album: `It's time for adventure`,
-      song: 'La Citadelle'
+      song: 'La Citadelle',
+      genreName: 'Chiptune'
     }, {
       artist: 'Komiku',
       album: `It's time for adventure`,
-      song: 'Bleu'
+      song: 'Bleu',
+      genreName: 'Chiptune'
     }]
 
-    for (let song of songs) {
-      await db.createSong(song)
+    for (let s of songs) {
+      const genre = await db.findGenreByName(s.genreName)
+      const song = await db.createSong(s)
+      song.setGenre(genre)
     }
   } catch (err) {
     console.log(err.message)
